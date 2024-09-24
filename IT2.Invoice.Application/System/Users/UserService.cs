@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -61,19 +62,48 @@ namespace IT2.Invoice.Application.System.Users
             return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-        public Task<ApiResult<bool>> Delete(Guid id)
+        public async Task<ApiResult<bool>> Delete(Guid id)  
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) 
+            {
+                return new ApiErrorResult<bool>("User không tồn tại");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded) {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Xóa User không thành công");
         }
 
-        public Task<ApiResult<UserVm>> GetById(Guid id)
+        public async Task<ApiResult<UserVm>> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) {
+                return new ApiErrorResult<UserVm>("Không tìm thấy User");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var UserVm = new UserVm()
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
+                Dob = user.Dob,
+                Id = user.Id,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Roles = roles
+            };
+            return new ApiSuccessResult<UserVm>(UserVm);
         }
 
         public Task<ApiResult<PagedResult<UserVm>>> GetUsersPaging(GetUserPagingRequest request)
         {
-            throw new NotImplementedException();
+            var query = _userManager.Users;
+            if (string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(x => x.UserName);
+            }
         }
 
         public Task<ApiResult<bool>> Register(RegisterRequest request)
