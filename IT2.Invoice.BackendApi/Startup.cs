@@ -3,7 +3,7 @@ using FluentValidation.AspNetCore;
 using IT2.Invoice.Application.System.Users;
 using IT2.Invoice.Data.EF;
 using IT2.Invoice.Data.Entities;
-using IT2.Invoice.Utility.Constants;
+using IT2.Invoice.Utilities.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +41,7 @@ namespace IT2.Invoice.BackendApi
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Invoice Solution", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
