@@ -10,7 +10,7 @@ namespace IT2.Invoice.ApiIntegration
 {
     public interface IUserApiClient
     {
-        Task<ApiResult<string>> Authenticate(LoginRequest request);
+        Task<ApiResult<string>> Authenticate(LoginRequest request); 
 
         Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request);
 

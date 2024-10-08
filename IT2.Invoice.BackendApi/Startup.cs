@@ -4,6 +4,7 @@ using IT2.Invoice.Application.System.Users;
 using IT2.Invoice.Data.EF;
 using IT2.Invoice.Data.Entities;
 using IT2.Invoice.Utilities.Constants;
+using IT2.Invoice.ViewModel.System.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,8 @@ namespace IT2.Invoice.BackendApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+          
+      
             services.AddDbContext<IT2DbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
@@ -30,15 +33,15 @@ namespace IT2.Invoice.BackendApi
                 .AddEntityFrameworkStores<IT2DbContext>()
                 .AddDefaultTokenProviders();
 
+            //Declare DI
+            //services.AddTransient<IStorageService, FileStorageService>();
+
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
-
             services.AddTransient<IUserService, UserService>();
-
-            services.AddControllers();
-                 //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
-
+            services.AddControllers()
+               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Invoice Solution", Version = "v1" });
@@ -125,7 +128,7 @@ namespace IT2.Invoice.BackendApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eInvoiceSolution V1");
             });
 
             app.UseEndpoints(endpoints =>

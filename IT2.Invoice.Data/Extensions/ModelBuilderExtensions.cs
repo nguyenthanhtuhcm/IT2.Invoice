@@ -21,7 +21,7 @@ namespace IT2.Invoice.Data.Extensions
                 Id = roleId,
                 Name = "admin",
                 NormalizedName = "admin",
-                Descriptions = "Administrator role"
+                Description = "Administrator role"
             });
 
             var hasher = new PasswordHasher<AppUser>();
@@ -38,6 +38,12 @@ namespace IT2.Invoice.Data.Extensions
                 FirstName = "Tu",
                 LastName = "Nguyen",
                 Dob = new DateTime(2020, 01, 31)
+            });
+
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                RoleId = roleId,
+                UserId = adminId
             });
         }
     }

@@ -9,6 +9,6 @@ namespace IT2.Invoice.Data.Entities
 {
     public class AppRole: IdentityRole<Guid>
     {
-        public string Descriptions { get; set; }
+        public string Description { get; set; }
     }
 }
